@@ -65,7 +65,7 @@ fun AlbumCard(){
                     modifier = Modifier
                         .weight(1f)
                 ){
-                    Text(text = "Tituloiowqj",
+                    Text(text = "Titulo",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
