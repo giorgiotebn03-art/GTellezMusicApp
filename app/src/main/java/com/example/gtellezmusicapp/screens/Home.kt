@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gtellezmusicapp.components.AlbumCard
 import com.example.gtellezmusicapp.components.MusicCard
 import com.example.gtellezmusicapp.components.PlayCard
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +45,8 @@ fun HomeScreen(){
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .padding(14.dp)
+            .padding(15.dp)
+            .padding(top = 20.dp)
     ){
         Column (
             modifier = Modifier
@@ -121,75 +123,13 @@ fun HomeScreen(){
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
                 ){
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 15.dp)
-                            .clip(RoundedCornerShape(34.dp))
-                            .background(Color.Cyan)
-                            .size(250.dp,150.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.AccountBox,
-                            contentDescription = "Opciones",
-                            tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier
-                                .size(200.dp)
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 15.dp)
-                            .clip(RoundedCornerShape(34.dp))
-                            .background(Color.Cyan)
-                            .size(250.dp,150.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.AccountBox,
-                            contentDescription = "Opciones",
-                            tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier
-                                .size(200.dp)
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 15.dp)
-                            .clip(RoundedCornerShape(34.dp))
-                            .background(Color.Cyan)
-                            .size(250.dp,150.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.AccountBox,
-                            contentDescription = "Opciones",
-                            tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier
-                                .size(200.dp)
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 15.dp)
-                            .clip(RoundedCornerShape(34.dp))
-                            .background(Color.Cyan)
-                            .size(250.dp,150.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.AccountBox,
-                            contentDescription = "Opciones",
-                            tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier
-                                .size(200.dp)
-                        )
-                    }
+                    AlbumCard()
+                    AlbumCard()
+                    AlbumCard()
+                    AlbumCard()
                 }
             }
             Column(
-                modifier = Modifier
-                    .padding(top = 35.dp)
             ) {
                 Row {
                     Text(text = "Recently Played",
