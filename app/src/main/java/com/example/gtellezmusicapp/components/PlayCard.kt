@@ -21,10 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import com.example.gtellezmusicapp.models.Album
+import com.example.gtellezmusicapp.ui.theme.Main
 
 @Composable
 fun PlayCard(){
@@ -34,7 +38,7 @@ fun PlayCard(){
             .shadow(elevation = 10.dp)
             .clip(RoundedCornerShape(12.dp))
             .fillMaxWidth()
-            .background(Color.Cyan)
+            .background(Main)
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -43,26 +47,27 @@ fun PlayCard(){
                 .size(60.dp),
             contentAlignment = Alignment.Center
         ){
-            Icon(
-                imageVector = Icons.Filled.AccountBox,
-                contentDescription = "Opciones",
-                tint = Color.Black,
+            AsyncImage(
+                model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNTwYwJf1FdI_0lizxyrsC0JGgQ72Dce4xw&s",
+                contentDescription = "La mejor cancion de Elvis",
                 modifier = Modifier
-                    .size(35.dp)
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                contentScale = ContentScale.Crop
             )
         }
         Column (
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp)
         ){
-            Text(text = "Titulo del album",
-                color = Color.Black,
+            Text(text = "The wonder of you",
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 25.sp,
                 modifier = Modifier
                     .padding(5.dp))
-            Text(text = "Autor",
-                color = Color.Gray,
+            Text(text = "Elvis",
+                color = Color.White,
                 fontSize = 15.sp,
                 modifier = Modifier
                     .padding(5.dp))
@@ -76,7 +81,7 @@ fun PlayCard(){
         ){
             Icon(
                 imageVector = Icons.Filled.PlayArrow,
-                contentDescription = "Opciones",
+                contentDescription = "Play",
                 tint = Color.White,
                 modifier = Modifier
                     .size(40.dp)

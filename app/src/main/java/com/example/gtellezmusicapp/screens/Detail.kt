@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,18 +31,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.gtellezmusicapp.components.AlbumCard
 import com.example.gtellezmusicapp.components.MusicCard
 import com.example.gtellezmusicapp.components.PlayCard
+import com.example.gtellezmusicapp.components.TrackCard
+import com.example.gtellezmusicapp.models.Album
+import com.example.gtellezmusicapp.ui.theme.Main
+import com.example.gtellezmusicapp.ui.theme.MainLight
 
 @Composable
-fun DetailScreen(){
+fun DetailScreen(album: Album, onClick: () -> Unit){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -54,23 +64,24 @@ fun DetailScreen(){
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(22.dp))
-                    .background(Color.Cyan)
+                    .background(Main)
                     .fillMaxWidth()
                     .height(300.dp),
                 contentAlignment = Alignment.Center
             ){
-                Icon(
-                    imageVector = Icons.Filled.AccountBox,
-                    contentDescription = "Opciones",
-                    tint = MaterialTheme.colorScheme.secondary,
+                AsyncImage(
+                    model = album.image,
+                    contentDescription = album.title,
                     modifier = Modifier
                         .size(200.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentScale = ContentScale.Crop
                 )
 
                 Row (
                     modifier = Modifier
                         .align(Alignment.TopCenter)
-                        .padding(start = 15.dp,end = 15.dp,top = 20.dp)
+                        .padding(start = 15.dp, end = 15.dp, top = 20.dp)
                 ){
                     Box(
                         modifier = Modifier
@@ -98,13 +109,13 @@ fun DetailScreen(){
                         .align(Alignment.BottomStart)
                         .padding(20.dp)
                 ){
-                    Text(text = "Titulo del album",
+                    Text(text = album.title,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         modifier = Modifier
                             .padding(5.dp))
-                    Text(text = "Autor / Pupular Song",
+                    Text(text = album.artist,
                         color = Color.White,
                         fontSize = 20.sp,
                         modifier = Modifier
@@ -149,30 +160,74 @@ fun DetailScreen(){
                     }
                 }
             }
-            Column(
-                modifier = Modifier
+            Column {
+                Box(modifier = Modifier
                     .padding(top = 25.dp)
+                ){
+                    Column {
+                        Column(
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .shadow(elevation = 10.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .padding(15.dp)
+                        ) {
+                            Text(text = "About this album",
+                                color = Main,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .padding(5.dp))
+                            Text(text = album.description,
+                                color = Color.Black,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .shadow(elevation = 10.dp)
+                                .clip(RoundedCornerShape(18.dp))
+                                .background(Color.White)
+                                .padding(10.dp)
+                        ){
+                            Row {
+                                Text(text = "Artist: ",
+                                    color = Main,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .padding(5.dp))
+                                Text(text = album.artist,
+                                    color = Color.Black,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .padding(vertical = 5.dp)
+                                        .padding(end = 5.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
             ) {
-                Row {
-                    Text(text = "Recently Played",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                    Text(text = "See more",
-                        color = Color.Cyan,
-                        fontSize = 20.sp,
-                        modifier = Modifier
+                items(10) { index ->
+                    TrackCard(
+                        album = album,
+                        num = index + 1
                     )
                 }
-                MusicCard()
-                MusicCard()
-                MusicCard()
-                MusicCard()
-                MusicCard()
             }
+
+
         }
         Box(
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -185,5 +240,15 @@ fun DetailScreen(){
 @Preview
 @Composable
 fun DetailScreenPreview(){
-    DetailScreen()
+    DetailScreen(
+        album =
+            Album(
+                title = "The wonder of you",
+                artist = "Elvis",
+                description = "La mejor cancion de Elvis",
+                image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNTwYwJf1FdI_0lizxyrsC0JGgQ72Dce4xw&s",
+                id = "1"
+            ),
+        onClick = {}
+    )
 }

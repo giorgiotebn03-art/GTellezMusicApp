@@ -4,38 +4,33 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.gtellezmusicapp.models.Album
 import com.example.gtellezmusicapp.ui.theme.Main
-import kotlin.String
 
 @Composable
-fun MusicCard(album: Album, onClick: () -> Unit) {
+fun TrackCard(album: Album, num: Int) {
     Box(
         modifier = Modifier
             .padding(top = 15.dp)
@@ -43,7 +38,7 @@ fun MusicCard(album: Album, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(Main.copy(alpha = 0.4f)) // halo muy suave
+                .background(Main.copy(alpha = 0.40f))
         ) {
             Box(
                 modifier = Modifier
@@ -54,11 +49,8 @@ fun MusicCard(album: Album, onClick: () -> Unit) {
             ) {
                 Row(
                     modifier = Modifier
-                        .shadow(elevation = 5.dp)
-                        .clip(RoundedCornerShape(12.dp))
                         .fillMaxWidth()
-                        .background(Color.Black)
-                        .padding(5.dp),
+                        .background(Color.Black),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
@@ -79,10 +71,12 @@ fun MusicCard(album: Album, onClick: () -> Unit) {
                             .padding(14.dp)
                     ) {
                         Text(
-                            text = album.title,
+                            text = "${album.title} - Track ${num}",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
+                            maxLines = 1, // 🔹 solo una línea
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .padding(5.dp)
                         )
@@ -106,7 +100,6 @@ fun MusicCard(album: Album, onClick: () -> Unit) {
                                 .size(35.dp)
                         )
                     }
-
                 }
             }
         }
@@ -115,8 +108,8 @@ fun MusicCard(album: Album, onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun MusicCardPreview(){
-    MusicCard(
+fun TrackCardPreview(){
+    TrackCard (
         album =
             Album(
                 title = "The wonder of you",
@@ -125,6 +118,6 @@ fun MusicCardPreview(){
                 image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNTwYwJf1FdI_0lizxyrsC0JGgQ72Dce4xw&s",
                 id = "1"
             ),
-        onClick = {}
+        num = 1
     )
 }
