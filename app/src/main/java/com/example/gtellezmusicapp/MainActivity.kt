@@ -11,8 +11,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.gtellezmusicapp.screens.DetailScreen
 import com.example.gtellezmusicapp.screens.HomeScreen
+import com.example.gtellezmusicapp.ui.theme.DetailRoute
 import com.example.gtellezmusicapp.ui.theme.GTellezMusicAppTheme
+import com.example.gtellezmusicapp.ui.theme.HomeRoute
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +27,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GTellezMusicAppTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen()
+                    NavHost(
+                        navController = navController,
+                        startDestination = HomeRoute
+                    ){
+                        composable<HomeRoute> {
+                            HomeScreen(navController)
+                        }
+                        composable<DetailRoute> { backStackEntry ->
+                            val args = backStackEntry.toRoute<DetailRoute>()
+                            DetailScreen(
+                                id = args.id,
+                                navController = navController
+                            )
+                        }
+                    }
                 }
             }
         }

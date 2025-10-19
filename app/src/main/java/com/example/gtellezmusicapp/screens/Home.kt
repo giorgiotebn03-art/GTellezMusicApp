@@ -34,16 +34,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.gtellezmusicapp.Services.AlbumService
 import com.example.gtellezmusicapp.components.AlbumCard
 import com.example.gtellezmusicapp.components.MusicCard
 import com.example.gtellezmusicapp.components.PlayCard
 import com.example.gtellezmusicapp.models.Album
+import com.example.gtellezmusicapp.ui.theme.DetailRoute
 import com.example.gtellezmusicapp.ui.theme.Main
 import com.example.gtellezmusicapp.ui.theme.MainLight
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +57,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(
+    navController: NavController
+){
     var albums by remember {
         mutableStateOf(listOf<Album>())
     }
@@ -80,7 +86,6 @@ fun HomeScreen(){
             loading = false
             Log.e("HomeScreen", e.toString())
         }
-
     }
 
     if(loading){
@@ -92,134 +97,155 @@ fun HomeScreen(){
             CircularProgressIndicator()
         }
     }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-            .padding(15.dp)
-            .padding(top = 20.dp)
-    ){
-        Column (
+    else {
+        Box(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
-        ){
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Black,
+                            Color.Black,
+                            Color.Black,
+                            Main
+                        ),
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY
+                    )
+                )
+                .padding(15.dp)
+                .padding(top = 20.dp)
+        ) {
             Column(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(22.dp))
-                    .background(Main)
-                    .padding(20.dp)
-                    .padding(bottom = 10.dp)
-            ){
-                Row (){
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .size(20.dp)
-                        )
-                    }
-                    Box(
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Menu",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .size(20.dp)
-                        )
-                    }
-
-                }
-                Text(text = "Good Morning!",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .padding(top = 25.dp, bottom = 5.dp))
-                Text(text = "Giorgio Tellez",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 35.sp,
-                    modifier = Modifier
-                        .padding( bottom = 5.dp))
-            }
-
-            Column (
-                modifier = Modifier
-                    .padding(top = 30.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(text = "Albums",
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(22.dp))
+                        .background(Main)
+                        .padding(20.dp)
+                        .padding(bottom = 10.dp)
+                ) {
+                    Row() {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Menu,
+                                contentDescription = "Menu",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(20.dp)
+                            )
+                        }
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = "Menu",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(20.dp)
+                            )
+                        }
+
+                    }
+                    Text(
+                        text = "Good Morning!",
                         color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                    Text(text = "See more",
-                        color = MainLight,
                         fontSize = 20.sp,
                         modifier = Modifier
+                            .padding(top = 25.dp, bottom = 5.dp)
+                    )
+                    Text(
+                        text = "Giorgio Tellez",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 35.sp,
+                        modifier = Modifier
+                            .padding(bottom = 5.dp)
                     )
                 }
-                LazyRow (
-                ){
-                    items(albums){ album ->
-                        AlbumCard(
-                            album = album,
-                            onClick = {
 
-                            })
-                    }
-                }
                 Column(
-                    modifier = Modifier.padding(bottom = 25.dp)
+                    modifier = Modifier
+                        .padding(top = 30.dp)
                 ) {
-                    Row {
-                        Text(text = "Recently Played",
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Albums",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
                             modifier = Modifier
                                 .weight(1f)
                         )
-                        Text(text = "See more",
+                        Text(
+                            text = "See more",
                             color = MainLight,
                             fontSize = 20.sp,
                             modifier = Modifier
                         )
                     }
-                    LazyColumn(
-                        modifier = Modifier
-                            .height(400.dp)
-                            .fillMaxWidth()
-                    ){
-                        items(albums){ album ->
-                            MusicCard(
+                    LazyRow(
+                    ) {
+                        items(albums) { album ->
+                            AlbumCard(
                                 album = album,
                                 onClick = {
-
-                                }
+                                    navController.navigate(DetailRoute(album.id))
+                                })
+                        }
+                    }
+                    Column(
+                        modifier = Modifier.padding(bottom = 25.dp)
+                    ) {
+                        Row {
+                            Text(
+                                text = "Recently Played",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                                modifier = Modifier
+                                    .weight(1f)
                             )
+                            Text(
+                                text = "See more",
+                                color = MainLight,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .height(400.dp)
+                                .fillMaxWidth()
+                        ) {
+                            items(albums) { album ->
+                                MusicCard(
+                                    album = album,
+                                    onClick = {
+                                        navController.navigate(DetailRoute(album.id))
+
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        ){
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            ) {
 
-            PlayCard()
+                PlayCard()
+            }
         }
     }
 }
@@ -227,5 +253,5 @@ fun HomeScreen(){
 @Preview
 @Composable
 fun HomeScreenPreview(){
-    HomeScreen()
+    HomeScreen(rememberNavController())
 }
